@@ -9,8 +9,10 @@ description: 로컬 Obsidian vault에 디자인 시스템 지식을 구조적으
 
 디자인 시스템 지식을 Obsidian vault에 장기적으로 축적한다.
 
-- Obsidian CLI만 사용한다.
-- 저장 카테고리는 `Inbox`, `Lessons`, `Links`, `Decisions` 네 가지만 사용한다.
+- Obsidian 공식 CLI를 사용한다.
+- vault 이름은 `mind palace`이다. 다른 스킬(mind-palace, obsidian-ai-archive)과 같은 vault를 공유한다.
+- 저장 카테고리는 `Inbox`, `Lessons`, `Links`, `Decisions` 네 가지이며, vault 최상위 폴더로 존재한다.
+- 도메인 구분은 폴더가 아니라 태그(`ds/*`)로 한다. 같은 `Lessons/` 폴더에 범용 지식(`mp/*`)과 디자인 시스템 지식(`ds/*`)이 함께 있지만 태그로 구분된다.
 - 사용자의 원문을 그대로 저장하지 말고, 질문과 재구성을 통해 검색 가능한 지식으로 바꿔 저장한다.
 - 질문 후에는 반드시 저장 초안을 먼저 제안한다.
 - 태그는 적게 쓰고 강하게 재사용한다.
@@ -50,19 +52,29 @@ description: 로컬 Obsidian vault에 디자인 시스템 지식을 구조적으
 
 질문만 하고 끝내지 않는다. 질문 후에는 반드시 저장 초안을 먼저 제안한다.
 
-## 저장 전 확인
+## Obsidian CLI 사용법
 
-Obsidian CLI 예시는 환경 변수 `OBSIDIAN_VAULT`를 기준으로 통일한다.
+Obsidian 공식 CLI를 사용한다. macOS 기준 경로는 `/Applications/Obsidian.app/Contents/MacOS/Obsidian`이다. vault 이름은 `mind palace`이다.
 
 ```sh
-obsidian vault="$OBSIDIAN_VAULT" search query="<핵심어>"
-obsidian vault="$OBSIDIAN_VAULT" tags counts
-obsidian vault="$OBSIDIAN_VAULT" create path="<Category>/<file-name>.md" content="<note-content>"
-obsidian vault="$OBSIDIAN_VAULT" read path="<Category>/<file-name>.md"
-obsidian vault="$OBSIDIAN_VAULT" append path="<Category>/<file-name>.md" content="<additional-content>"
+# 중복 확인 (저장 전 필수)
+/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" search query="<핵심어>"
+/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" tags counts
+
+# 노트 생성 (content에서 줄바꿈은 \n)
+/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" create path="<Category>/<file-name>.md" content="<note-content>"
+
+# 노트 읽기
+/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" read path="<Category>/<file-name>.md"
+
+# 노트에 내용 추가
+/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" append path="<Category>/<file-name>.md" content="<additional-content>"
+
+# 노트 삭제
+/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" delete path="<Category>/<file-name>.md"
 ```
 
-CLI가 동작하지 않으면 설치 절차를 길게 설명하지 말고, `OBSIDIAN_VAULT` 값과 실행 가능한 명령만 확인한 뒤 저장을 보류한다.
+CLI가 동작하지 않으면 Obsidian 앱 버전이 1.12 이상인지 확인하고 저장을 보류한다.
 
 ## 카테고리 선택 규칙
 
@@ -225,7 +237,7 @@ related:
 - `captured_at`: ISO-8601 타임스탬프를 넣는다.
 - `source`: 선택 필드다. 넣는다면 URL만 허용한다.
 - `entities`: 태그로 만들지 않을 대상어를 1-3개까지 넣는다.
-- `related`: 관련 노트가 있을 때만 넣고, 값은 Obsidian wiki-link 형식으로 넣는다.
+- `related`: 관련 노트가 있을 때만 넣고, 값은 Obsidian wiki-link 형식으로 넣는다. 경로는 `MindPalace/DesignSystem/` 기준으로 쓴다.
 
 `entities`는 태그를 더럽히지 않고 대상 검색성을 확보하기 위한 필드다.
 
