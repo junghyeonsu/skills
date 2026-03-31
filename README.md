@@ -41,3 +41,9 @@ npx skills add https://github.com/junghyeonsu/skills --skill obsidian-ai-archive
 ```bash
 npx skills add https://github.com/junghyeonsu/skills --skill linear-collab
 ```
+
+#### wrap-up
+
+```bash
+npx skills add https://github.com/junghyeonsu/skills --skill wrap-up
+```
