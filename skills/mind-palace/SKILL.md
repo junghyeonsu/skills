@@ -266,7 +266,7 @@ related:
 필드 규칙:
 
 - `title`: 사람도 읽기 쉽고 검색도 가능한 제목을 쓴다. 한국어와 영어를 자연스럽게 섞어도 된다.
-- `description`: 왜 중요한지 한 문장으로 쓴다.
+- `description`: 1-2문장으로 "무엇에 대한 지식인가"와 "어떤 상황에서 다시 찾게 될지"를 모두 담는다. recall이 title과 description만 보고 관련성을 판단하므로, 구체적인 대상어와 검색 맥락을 포함한다.
 - `category`: `Inbox`, `Lessons`, `Insights`, `Principles` 중 하나만 사용한다.
 - `tags`: 1-3개만 사용한다.
 - `captured_at`: ISO-8601 타임스탬프를 넣는다.
