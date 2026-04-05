@@ -20,22 +20,6 @@ npx skills add https://github.com/junghyeonsu/skills --skill mind-palace
 npx skills add https://github.com/junghyeonsu/skills --skill mind-palace-recall
 ```
 
-#### obsidian-design-system-knowledge
-
-디자인 시스템 전용 지식을 저장한다. MindPalace 구조 위에서 동작한다. (`MindPalace/DesignSystem/`)
-
-```bash
-npx skills add https://github.com/junghyeonsu/skills --skill obsidian-design-system-knowledge
-```
-
-### 기타
-
-#### obsidian-ai-archive
-
-```bash
-npx skills add https://github.com/junghyeonsu/skills --skill obsidian-ai-archive
-```
-
 #### linear-collab
 
 ```bash
@@ -46,4 +30,10 @@ npx skills add https://github.com/junghyeonsu/skills --skill linear-collab
 
 ```bash
 npx skills add https://github.com/junghyeonsu/skills --skill wrap-up
+```
+
+### Knowledge Lint
+
+```bash
+npx skills add https://github.com/junghyeonsu/skills --skill knowledge-lint
 ```
