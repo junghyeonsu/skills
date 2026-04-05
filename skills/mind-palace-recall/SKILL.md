@@ -15,15 +15,15 @@ Claude는 스킬을 단계적으로 로딩한다.
 
 1. **1단계 (항상)**: name + description만 본다. 이것만으로 이 스킬을 호출할지 결정한다.
 2. **2단계 (호출 시)**: SKILL.md 전체를 읽는다. 검색 전략과 태그 매핑을 알게 된다.
-3. **3단계 (검색)**: Obsidian CLI로 vault를 검색한다. 태그(mp/*), entities, 키워드를 사용한다.
+3. **3단계 (검색)**: Obsidian CLI로 vault를 검색한다. 태그(플랫 태그), entities, 키워드를 사용한다.
 
 이 구조가 recall의 설계에 미치는 영향:
 
 - **description이 너무 좁으면** 사용자가 관련 주제를 다루고 있어도 스킬이 호출되지 않는다. 저장해둔 지식이 있어도 무용지물이 된다.
 - **description이 너무 넓으면** 무관한 대화에서도 매번 vault를 검색하게 되어 노이즈가 된다.
-- **태그(`mp/*`)가 검색의 핵심이다.** 대화 주제를 태그로 매핑하면 vault에서 관련 노트만 빠르게 찾을 수 있다.
+- **`_index.md`가 검색의 핵심이다.** 카테고리별 전체 노트 목록과 description 요약이 있으므로, 대화 주제와 관련된 노트를 빠르게 찾을 수 있다.
 
-그래서 이 스킬의 description에는 mind-palace에서 사용하는 태그 영역(engineering, communication, decision, planning, debugging, design, productivity, career, collaboration, learning, writing, review)과 대응하는 구체적인 상황들을 나열해두었다. 이것이 1단계 트리거링의 정확도를 높인다.
+그래서 이 스킬의 description에는 다양한 상황(코드 리뷰, 일정 추정, API 설계, 디버깅, 팀 커뮤니케이션, 기술 선택 등)을 나열해두었다. 이것이 1단계 트리거링의 정확도를 높인다.
 
 ## 동작 모드
 
@@ -33,12 +33,12 @@ Claude는 스킬을 단계적으로 로딩한다.
 
 자동 검색이 의미 있는 상황:
 
-- 사용자가 일정을 짜고 있다 → `mp/planning` 태그로 관련 교훈 검색
-- 사용자가 기술 선택을 고민하고 있다 → `mp/decision` 태그로 관련 원칙 검색
-- 사용자가 코드 리뷰를 하고 있다 → `mp/review` + `mp/engineering` 태그로 검색
-- 사용자가 팀 커뮤니케이션 문제를 다루고 있다 → `mp/communication` 태그로 검색
-- 사용자가 디버깅을 하고 있다 → `mp/debugging` 태그로 검색
-- 사용자가 API를 설계하고 있다 → `mp/engineering` + entities 검색
+- 사용자가 일정을 짜고 있다 → _index.md에서 Lessons/Principles 카테고리 스캔, "일정", "추정" 키워드 검색
+- 사용자가 기술 선택을 고민하고 있다 → Decisions/Principles 카테고리 중심 검색
+- 사용자가 코드 리뷰를 하고 있다 → "리뷰", "코드 리뷰" 키워드 검색
+- 사용자가 디버깅을 하고 있다 → "디버깅", "에러" 키워드 검색
+- 사용자가 컴포넌트를 만들고 있다 → entities에 컴포넌트 이름으로 검색
+- 사용자가 AI 모델을 비교하고 있다 → News 카테고리 + "모델" 키워드 검색
 
 자동 모드의 현실적 제약:
 
@@ -63,26 +63,21 @@ Claude는 스킬을 단계적으로 로딩한다.
 2. 태그, entities, 제목, 본문을 모두 대상으로 검색한다.
 3. 검색 결과를 관련도 순으로 보여준다.
 
-## 검색 전략: 태그를 인덱스로 활용
+## 검색 전략: _index.md + 키워드
 
-검색의 핵심은 대화 주제를 `mp/*` 태그로 매핑하는 것이다. 이 매핑이 정확할수록 관련 노트를 빠르게 찾을 수 있다.
+검색의 핵심은 `_index.md`를 먼저 읽고, 대화 주제와 관련된 노트를 카테고리와 description으로 빠르게 좁히는 것이다.
 
-### 주제 → 태그 매핑 테이블
+### 주제 → 검색 전략 매핑
 
-| 대화 주제 | 1차 태그 | 2차 태그 (선택) |
+| 대화 주제 | 우선 카테고리 | 검색 키워드 예시 |
 |---|---|---|
-| 코드 구현, 리팩토링, 아키텍처 | `mp/engineering` | |
-| 팀 소통, 피드백, 설득 | `mp/communication` | |
-| 기술 선택, 방향 결정 | `mp/decision` | |
-| 일정, 리소스, 스프린트 | `mp/planning` | |
-| 버그 추적, 에러 분석 | `mp/debugging` | |
-| UX, UI, 시각적 결정 | `mp/design` | |
-| 워크플로우, 도구, 자동화 | `mp/productivity` | |
-| 성장, 면접, 역할 | `mp/career` | |
-| 팀워크, 프로세스, 역할 분담 | `mp/collaboration` | |
-| 새로운 기술, 학습 방법 | `mp/learning` | |
-| 문서, 블로그, 기술 글쓰기 | `mp/writing` | |
-| 코드 리뷰, PR, 품질 체크 | `mp/review` | |
+| 과거의 실수, 교훈 | Lessons | 상황 키워드 |
+| 기술 방향 결정 | Decisions, Principles | 기술명, 대안 |
+| 패턴, 관점 변화 | Insights | 주제 키워드 |
+| 반복 적용 원칙 | Principles | 원칙 키워드 |
+| 참고 문서 | Links | 주제, URL |
+| 외부 뉴스, 시그널 | News | 회사명, 제품명 |
+| 미해결 아이디어 | Inbox | 주제 키워드 |
 
 ### Obsidian CLI 사용법
 
@@ -91,26 +86,24 @@ Obsidian 공식 CLI를 사용한다. macOS 기준 경로는 `/Applications/Obsid
 ### 검색 절차
 
 ```sh
-# 1단계: 키워드로 vault 전체 검색
-/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" search query="<키워드>"
+# 0단계: _index.md 읽기 (있으면 우선 참조)
+/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" read path="_index.md"
 
-# 2단계: 특정 카테고리 폴더 내 검색
-/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" search query="<키워드>" path="Principles/"
+# 1단계: _index.md에서 관련 태그 섹션의 노트 목록 확인
+# → description 첫 문장으로 관련성 빠르게 판단
+# → 관련 노트를 직접 읽기
+
+# 2단계: _index.md에서 부족하면 키워드로 vault 전체 검색
+/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" search query="<키워드>"
 
 # 3단계: 검색 결과 노트 읽기
 /Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" read path="<검색된-파일-경로>"
-
-# 태그 현황 확인
-/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" tags counts
-
-# 특정 태그 상세 (태그가 붙은 파일 목록)
-/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" tag name="mp/<태그명>" verbose
 ```
 
 검색 우선순위:
 
-1. 먼저 매핑된 태그(`mp/*`)로 검색한다 — 가장 빠르고 정확하다.
-2. 태그 검색 결과가 없으면 키워드로 전문 검색한다.
+1. `_index.md`를 먼저 읽는다. 카테고리별 전체 노트 목록과 description이 있으므로, 대화 주제와 관련된 노트를 빠르게 좁힐 수 있다.
+2. _index.md가 없으면 키워드로 vault 전체를 검색한다.
 3. entities 필드에 해당 키워드가 있는 노트도 함께 찾는다.
 4. 필요하면 유사어나 상위 개념으로 한 번 더 검색한다.
 
@@ -170,15 +163,54 @@ Obsidian 공식 CLI를 사용한다. macOS 기준 경로는 `/Applications/Obsid
 
 - "관련된 기존 지식이 아직 없네요. 이번 대화에서 배운 게 있으면 `/mind-palace`로 저장해둘 수 있어요."
 
+## 활동 로그 기록
+
+노트를 참조할 때마다 `_log.md`에 기록을 남긴다. 이 데이터는 knowledge-lint 스킬이 활용한다.
+
+### 기록 시점과 엔트리 타입
+
+**[RECALL]** — 검색해서 노트를 참조했을 때:
+```markdown
+- [RECALL] "planning" 검색 → "일정 추정 시 코드 리뷰 시간" 참조 (session: 레포명)
+```
+
+**[RECALL-USED]** — 참조한 노트가 대화에서 실제로 활용되었을 때:
+```markdown
+- [RECALL-USED] "일정 추정 시 코드 리뷰 시간" — 스프린트 플래닝에 적용
+```
+
+**[RECALL-STALE]** — 참조한 노트의 내용이 현재 상황과 맞지 않을 때:
+```markdown
+- [RECALL-STALE] "Webpack 설정 가이드" — Vite로 마이그레이션 완료되어 더 이상 유효하지 않음
+```
+
+### 판단 기준
+
+사용자에게 "이 노트 유용했나요?"라고 묻지 않는다. 대화 흐름에서 자연스럽게 판단한다:
+
+- 노트 내용을 인용하며 작업을 진행함 → `[RECALL-USED]`
+- 노트를 보여줬지만 대화에서 무시됨 → 로그 없음 (부정 피드백은 기록 안 함)
+- "그건 이제 다르다", "예전 방식이다" 같은 반응 → `[RECALL-STALE]`
+
+### 기록 방법
+
+```sh
+# _log.md 읽기
+/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" read path="_log.md"
+
+# 기존 내용 + 새 엔트리로 재작성
+/Applications/Obsidian.app/Contents/MacOS/Obsidian vault="mind palace" write path="_log.md" content="<existing + new entry>"
+```
+
+_log.md가 없으면 새로 생성한다. 기록 실패 시에도 검색 결과 제시는 정상적으로 진행한다.
+
+[RECALL-USED]와 [RECALL-STALE]은 대화가 진행되면서 판단이 가능해지므로, 검색 직후가 아니라 대화 흐름에서 적절한 시점에 기록한다. 한 세션에서 여러 번 기록하지 않고, 세션이 끝나갈 때 한 번에 기록해도 된다.
+
 ## 다른 스킬과의 관계
 
-mind-palace-recall은 `mind palace` vault 전체를 검색한다. 이 vault에는 여러 스킬이 같은 카테고리 폴더(`Lessons/`, `Insights/`, `Principles/`, `Decisions/`, `Links/`, `Inbox/`)에 노트를 저장하되, 도메인은 태그로 구분한다:
+mind-palace-recall은 `mind palace` vault 전체를 검색한다. 모든 노트는 mind-palace 스킬 하나로 저장되며, 같은 카테고리 폴더(`Lessons/`, `Insights/`, `Principles/`, `Decisions/`, `Links/`, `News/`, `Inbox/`)에 플랫 태그로 구분된다.
 
-- `mp/*` 태그 — mind-palace 스킬이 저장한 범용 지식
-- `ds/*` 태그 — obsidian-design-system-knowledge 스킬이 저장한 디자인 시스템 지식
-- `ai/*` 태그 — obsidian-ai-archive 스킬이 저장한 AI 아카이브
-
-vault 전체를 검색하면 모든 도메인의 지식이 함께 나온다. 태그로 필터링하면 특정 도메인만 볼 수 있다.
+vault에는 `_index.md`(전체 노트 카탈로그)와 `_log.md`(활동 로그)가 있다. 검색 시 `_index.md`를 먼저 참조하면 더 빠르게 관련 노트를 찾을 수 있다.
 
 ## 실패 사례와 안티패턴
 
@@ -190,4 +222,4 @@ vault 전체를 검색하면 모든 도메인의 지식이 함께 나온다. 태
 - 검색 결과를 전체 노트 내용으로 장황하게 인용하기
 - 사용자가 관심 없는 과거 지식을 반복적으로 언급하기
 - vault가 비어있거나 CLI가 동작하지 않을 때 에러를 장황하게 설명하기
-- 태그 매핑 없이 키워드만으로 검색하기 (태그가 1차 필터, 키워드가 2차 필터)
+- _index.md를 건너뛰고 바로 키워드 검색하기 — _index.md를 먼저 참조하면 더 빠르고 정확하다

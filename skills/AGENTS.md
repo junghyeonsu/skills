@@ -32,5 +32,6 @@ description: <트리거 설명>  # 한국어, 1-3문장, "언제 사용하는지
 
 - vault 이름: `mind palace`
 - CLI 경로: `/Applications/Obsidian.app/Contents/MacOS/Obsidian`
-- 도메인 구분: 폴더가 아닌 태그 (`mp/*`, `ds/*`, `ai/*`)
+- 태그 사용 안 함. 검색은 title, description, entities, _index.md가 담당
 - 카테고리 폴더: vault 루트에 직접 위치 (`Lessons/`, `Decisions/` 등)
+- 공유 인프라: `_index.md` (지식 카탈로그), `_log.md` (활동 로그)
