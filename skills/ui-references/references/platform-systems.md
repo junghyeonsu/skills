@@ -6,15 +6,15 @@
 
 ## Astryx (Meta) — 주목
 
-2026-01 공개. Meta 내부에서 8년간 자란 시스템을 오픈소스로 낸 것으로, 13,000+ 앱에 쓰였다고 밝히고 있다. React + StyleX 기반, 현재 Beta, MIT.
+Meta 내부에서 오래 쓰이다 오픈소스로 나온 시스템. React + StyleX 기반, MIT.
 
-**볼 때**: **"에이전트가 쓰는 디자인시스템"을 어떻게 설계하는가** — 이 시스템의 명시적 목표다. 그리고 eject(swizzle) 모델, 테마를 CSS 변수 오버라이드로만 정의하는 방식.
-**안 볼 때**: 안정성이 필요한 프로덕션 의존성으로 (Beta).
+**볼 때**: **"에이전트가 쓰는 디자인시스템"을 어떻게 설계하는가** — 이 시스템이 내건 명시적 목표다. 그리고 eject(swizzle) 모델, 테마를 CSS 변수 오버라이드로만 정의하는 방식.
+**안 볼 때**: 성숙도가 중요한 프로덕션 의존성으로 — 공개된 지 얼마 안 됐다. 채택 전에 현재 안정성 단계를 직접 확인할 것.
 
 ```
 repo: facebook/astryx
 branch: main
-components: packages/core/src/<PascalCase>/      (121개 디렉토리)
+components: packages/core/src/<PascalCase>/
 themes: packages/themes/
 cli: packages/cli/
 experimental: packages/lab/
@@ -29,12 +29,12 @@ site: https://astryx.atmeta.com
 fetch 예시:
 `https://raw.githubusercontent.com/facebook/astryx/main/packages/core/src/Dialog/Dialog.tsx`
 
-훔칠 포인트 (SEED 관점에서 특히):
-- **스타일 구현을 소비자에게 숨기는 경계** — StyleX로 작성했지만 사용자는 미리 빌드된 CSS를 import하고 `className`으로 덮어쓴다. 빌드 플러그인·PostCSS 설정이 필요 없다. "우리는 X로 만들지만 너희는 X를 몰라도 된다"는 선긋기. qvism/Panda 노출 범위를 정할 때 비교 대상
-- **swizzle (eject)** — `packages/cli/`. 컴포넌트 전체 소스를 프로젝트로 꺼내 소유하게 하는 명령. shadcn의 복사 모델과 라이브러리 모델의 절충안이며, SEED snippet registry와 직접 비교된다
-- **agent-ready 표방** — 레포 루트에 `CLAUDE.md`와 `.claude/`가 있고 CLI가 "agent-ready docs"를 낸다. 문서·API·CLI를 사람과 에이전트가 같은 방식으로 쓰도록 설계했다고 주장한다. SEED의 llms.txt 체계와 비교해 볼 것
-- **테마 = CSS custom property 오버라이드만** — 포크나 래핑 없이 디자이너가 테마를 바꿀 수 있게 한 제약. rootage 다중 테마와 비교
-- `packages/lab/` — 실험 컴포넌트를 `@canary` dist-tag로만 배포하는 분리 (SEED의 archive/실험 정책과 비교)
+훔칠 포인트:
+- **스타일 구현을 소비자에게 숨기는 경계** — StyleX로 작성했지만 사용자는 미리 빌드된 CSS를 import하고 `className`으로 덮어쓴다. 빌드 플러그인·PostCSS 설정이 필요 없다. "우리는 X로 만들지만 너희는 X를 몰라도 된다"는 선긋기. 스타일 도구를 어디까지 노출할지 정할 때의 한 극단
+- **swizzle (eject)** — `packages/cli/`. 컴포넌트 전체 소스를 프로젝트로 꺼내 소유하게 하는 명령. shadcn의 복사 모델과 라이브러리 모델의 절충안이다
+- **agent-ready 표방** — 레포 루트에 `CLAUDE.md`와 `.claude/`가 있고 CLI가 agent용 문서를 낸다. 문서·API·CLI를 사람과 에이전트가 같은 방식으로 쓰도록 설계했다고 주장한다
+- **테마 = CSS custom property 오버라이드만** — 포크나 래핑 없이 디자이너가 테마를 바꿀 수 있게 한 제약
+- `packages/lab/` — 실험 컴포넌트를 별도 dist-tag로만 배포해 안정 API와 분리하는 방식
 
 ---
 
@@ -64,9 +64,9 @@ updates: https://github.com/adobe/react-spectrum/releases
 site: https://spectrum.adobe.com
 ```
 
-> **레이아웃이 바뀌었다 (2026-08 실측).** 예전 경로 `packages/@react-aria/<domain>/src/`와 `packages/@react-stately/<domain>/src/`에는 이제 `index.ts` 하나만 있고, 실제 구현은 `packages/react-aria/src/<domain>/`, `packages/react-stately/src/<domain>/`로 옮겨졌다. `@react-spectrum/*`도 마찬가지로 셸이며 `@adobe/react-spectrum`을 다시 내보낸다. 오래된 문서·블로그의 `packages/@react-aria/...` 경로는 그대로 안 먹는다. `@internationalized/*`는 예전 위치 그대로다.
+> **함정**: `packages/@react-aria/*`, `packages/@react-stately/*`, `packages/@react-spectrum/*`은 `index.ts`만 있는 re-export 셸이다. 실제 구현은 위 표의 경로에 있다. 외부 문서나 블로그가 안내하는 `packages/@react-aria/...` 경로로는 소스를 못 읽는다. `@internationalized/*`만 예외로 그 경로에 실물이 있다.
 
-훔칠 포인트: **각 층의 경계 규칙 자체.** 상태는 DOM을 모르고, 동작은 스타일을 모르고, 제품 층만 브랜드를 안다. SEED의 headless/qvism/react 3층과 대응시켜 읽으면 어디가 새는지 보인다. 그리고 `packages/dev/docs/` — 같은 소스에서 여러 층의 문서를 생성하는 방식.
+훔칠 포인트: **각 층의 경계 규칙 자체.** 상태는 DOM을 모르고, 동작은 스타일을 모르고, 제품 층만 브랜드를 안다. 자기 시스템의 레이어와 대응시켜 읽으면 어디가 새는지 보인다. 그리고 `packages/dev/docs/` — 같은 소스에서 여러 층의 문서를 생성하는 방식.
 
 ---
 
@@ -108,7 +108,6 @@ updates: https://github.com/Shopify/polaris/releases
 site: https://polaris.shopify.com
 ```
 
-**유지 상태**: 최근 푸시 2026-01로 상당히 조용하다. 코드 참고보다 **가이드라인 문서** 쪽 가치가 크다.
 **볼 때**: 콘텐츠 가이드라인(UX 라이팅 규범)이 이 분야에서 가장 상세한 축에 든다. 컴포넌트마다 "이럴 때 쓰고 이럴 때 쓰지 마라"가 문서화돼 있다.
 
 ---
@@ -137,21 +136,6 @@ components: packages/tamagui/src/
 updates: https://github.com/tamagui/tamagui/releases
 ```
 
-**볼 때**: **웹과 React Native를 하나의 코드로 커버**하는 접근. 컴파일러가 플랫폼별로 스타일을 갈라 내보낸다. SEED의 web/Lynx 이원화와 문제의식이 겹치므로, "하나의 소스로 두 런타임"을 시도한 사례로 볼 가치가 있다.
+**볼 때**: **웹과 React Native를 하나의 코드로 커버**하는 접근. 컴파일러가 플랫폼별로 스타일을 갈라 내보낸다. 멀티 런타임을 "하나의 소스로 컴파일" 쪽으로 풀 때의 참고 사례 — 반대 극단은 런타임별로 구현을 나누고 스펙만 공유하는 방식이다.
 **안 볼 때**: 웹 전용 프로젝트 (추상화 비용만 남는다).
 
----
-
-## SEED (멀티플랫폼 관점)
-
-```
-repo: daangn/seed-design
-branch: dev             ← main 아님, 주의
-web: packages/react/src/components/          (84)
-lynx: packages/lynx-react/src/components/    (13)
-shared-spec: packages/rootage/
-web-recipe: packages/qvism-preset/
-lynx-recipe: packages/lynx-qvism-preset/
-```
-
-웹(React)과 Lynx 두 런타임을 **rootage 스펙을 공유하되 구현은 분리**하는 전략. Tamagui(하나의 소스로 컴파일)와 반대 방향의 선택이며, 각 런타임의 제약이 다를 때 이쪽이 현실적일 수 있다. 커버리지 격차(84 vs 13)가 이 전략의 비용이다.

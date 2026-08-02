@@ -17,8 +17,6 @@ Dialog, Drawer/BottomSheet, Menu, Toast, Tooltip/Popover + focus·scroll 유틸.
 - `radix-ui/primitives` — `packages/react/dialog/src/dialog.tsx`, `packages/react/alert-dialog/src/`
 - `chakra-ui/zag` — `packages/machines/dialog/src/`
 
-SEED: `daangn/seed-design` (**branch: dev**) — `packages/react-headless/dialog/src/`
-
 ---
 
 ## Drawer / BottomSheet
@@ -31,8 +29,6 @@ SEED: `daangn/seed-design` (**branch: dev**) — `packages/react-headless/dialog
 - `emilkowalski/vaul` — `repo: emilkowalski/vaul` — `src/index.tsx` (드래그 임계값·스냅 포인트), `src/use-prevent-scroll.ts`
 - `mui/base-ui` (master) — `packages/react/src/drawer/`
 - `chakra-ui/zag` — `packages/machines/drawer/src/`
-
-SEED: `daangn/seed-design` (dev) — `packages/react-headless/drawer/src/Drawer.tsx`. Lynx 쪽은 `@lynx-js/lynx-ui-sheet`를 래핑하는 별개 경로다(웹과 구현이 다름).
 
 ---
 
@@ -49,8 +45,6 @@ SEED: `daangn/seed-design` (dev) — `packages/react-headless/drawer/src/Drawer.
 - `mui/base-ui` (master) — `packages/react/src/menu/`, `packages/react/src/menubar/`, `packages/react/src/context-menu/`
 - `chakra-ui/zag` — `packages/machines/menu/src/`
 
-SEED: `daangn/seed-design` (dev) — `packages/react-headless/menu/src/Menu.tsx` (Radix FocusScope 연계 주석 있음), `navigation-menu/`
-
 ---
 
 ## Toast / Snackbar
@@ -65,8 +59,6 @@ SEED: `daangn/seed-design` (dev) — `packages/react-headless/menu/src/Menu.tsx`
 - `chakra-ui/zag` — `packages/machines/toast/src/toast-group.machine.ts`
 - `radix-ui/primitives` — `packages/react/toast/src/`
 
-SEED: `daangn/seed-design` (dev) — `packages/react-headless/snackbar/src/`
-
 ---
 
 ## Tooltip / Popover / HoverCard
@@ -79,8 +71,6 @@ SEED: `daangn/seed-design` (dev) — `packages/react-headless/snackbar/src/`
 - `mui/base-ui` (master) — `packages/react/src/tooltip/`, `popover/`, `preview-card/`(=HoverCard), `packages/react/src/floating-ui-react/` (벤더링된 floating-ui)
 - `radix-ui/primitives` — `packages/react/tooltip/src/`, `popover/src/`, `hover-card/src/`, `packages/react/popper/src/` (공통 위치 계산)
 - `floating-ui/floating-ui` (**branch: master**) — `repo: floating-ui/floating-ui` — `packages/react/src/` (인터랙션 훅), `packages/core/src/middleware/` (flip/shift/offset/size/arrow — 미들웨어는 `dom`이 아니라 `core`에 있다)
-
-SEED: `daangn/seed-design` (dev) — `packages/react-headless/tooltip/`, `popover/`, `floating/` (floating-ui 래핑 레이어)
 
 ---
 
@@ -105,9 +95,12 @@ SEED: `daangn/seed-design` (dev) — `packages/react-headless/tooltip/`, `popove
 | `theKashey/react-remove-scroll` (**master**) | `repo: theKashey/react-remove-scroll` — Radix가 쓰는 것. 스크롤바 너비 보정 포함 |
 | React Aria `usePreventScroll` | `adobe/react-spectrum` → `packages/react-aria/src/overlays/usePreventScroll.ts` — **iOS Safari 처리가 가장 견고** |
 
-SEED는 **후자를 포팅**했다: `packages/react-headless/prevent-scroll/src/usePreventScroll.ts`. 파일 헤더에 `derived from adobe/react-spectrum` + 원본 경로가 적혀 있고, "iOS 지원 버전을 올릴 때 upstream과 재대조하라"는 주석까지 있다. 손대기 전에 원본 diff부터 볼 것.
+둘 중 하나를 골라 프로젝트에 고정해 두는 편이 낫다. 오버레이마다 다른 방식을 쓰면 중첩됐을 때 서로 간섭한다. 포팅해서 내재화할 거라면 upstream이 iOS 대응을 계속 패치하므로 원본과 재대조할 시점을 정해둘 것.
 
 ### 레이어 스택 (무엇이 위이고 Escape가 무엇을 닫는가)
 
 - `radix-ui/primitives` — `packages/react/dismissable-layer/src/` (원조 패턴)
-- SEED — `packages/react-headless/dismissible-layer/src/layer-stack.ts`. 주석에 Radix·Zag·Base UI 세 소스의 아이디어를 어디서 가져왔는지 각각 명시돼 있어서, 세 방식을 한 파일에서 비교하기에 좋다.
+- `chakra-ui/zag` — `packages/machines/dialog/src/` 내 레이어 처리 (포커스 전환에 따른 연쇄 dismiss)
+- `mui/base-ui` (master) — `packages/react/src/floating-ui-react/` 의 FloatingNode/FloatingTree (중첩 팝업 트리)
+
+세 라이브러리가 같은 문제를 다르게 푼다. 중첩 오버레이를 직접 만들 거면 셋을 나란히 보는 게 가장 빠르다.

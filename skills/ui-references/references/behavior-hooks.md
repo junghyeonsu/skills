@@ -26,7 +26,7 @@ fetch 예시:
 훔칠 포인트:
 - `packages/react-aria/src/interactions/usePress.ts` — **이 레포에서 가장 값어치 있는 파일 중 하나.** 마우스/터치/펜/키보드를 하나의 press 개념으로 정규화하고, 터치 후 유령 클릭·드래그 취소·롱프레스를 다 다룬다. 직접 만들면 반드시 빠뜨리는 것들
 - `packages/react-aria/src/interactions/useFocusVisible.ts` — `:focus-visible` 판정을 JS로 재현
-- `packages/react-aria/src/overlays/usePreventScroll.ts` — iOS Safari 스크롤 잠금. SEED가 포팅한 원본
+- `packages/react-aria/src/overlays/usePreventScroll.ts` — iOS Safari 스크롤 잠금. 이 문제를 가장 깊게 판 구현이라 포팅해 가는 곳이 많다
 - `packages/react-aria/src/focus/FocusScope.tsx` — focus trap + 복원
 - `packages/@internationalized/date/src/` — 캘린더/타임존 계산. 날짜를 다룬다면 사실상 필수
 - `packages/react-aria/src/i18n/` — 로케일·방향(RTL) 컨텍스트
@@ -35,7 +35,7 @@ fetch 예시:
 
 ## floating-ui — 위치 계산 표준
 
-툴팁·팝오버·드롭다운의 위치 계산. 이 분야에 실질적 경쟁자가 없다. Radix·Base UI·SEED 모두 이걸 쓴다.
+툴팁·팝오버·드롭다운의 위치 계산. 이 분야에 실질적 경쟁자가 없다. Radix도 Base UI도 결국 이걸 쓴다.
 
 **볼 때**: 뷰포트 경계 처리(flip/shift), 화살표 위치, 가상 요소(커서 위치에 띄우기), 자동 업데이트가 필요할 때.
 **안 볼 때**: CSS Anchor Positioning으로 충분한 경우 — 지원 범위를 먼저 확인할 것 (네이티브가 되면 이 의존성이 사라질 수 있다).
@@ -62,7 +62,7 @@ updates: https://github.com/floating-ui/floating-ui/releases
 | --- | --- | --- |
 | `theKashey/react-remove-scroll` (**master**) | 배경 스크롤 잠금 | Radix가 쓰는 것. 스크롤바 너비 보정 포함 |
 | `theKashey/react-focus-lock` (**master**) | focus trap | 독립 라이브러리 중 엣지케이스가 가장 많이 다뤄짐 |
-| React Aria `usePreventScroll` | 배경 스크롤 잠금 | iOS Safari 처리가 가장 견고. SEED 채택 |
+| React Aria `usePreventScroll` | 배경 스크롤 잠금 | iOS Safari 처리가 가장 견고 |
 | Radix `FocusScope` | focus trap | 라이브러리에 내장된 형태 |
 
 ```
@@ -106,9 +106,11 @@ core: packages/virtual-core/src/index.ts
 
 | 문제 | 참고 |
 | --- | --- |
-| 제어/비제어 상태 통합 | Radix `packages/react/use-controllable-state/`, SEED `packages/react-headless/use-controllable-state/` |
+| 제어/비제어 상태 통합 | Radix `packages/react/use-controllable-state/` |
 | ref 합성 | Radix `packages/react/compose-refs/src/` |
-| prop 병합 | Base UI `packages/react/src/merge-props/`, SEED `packages/utils/dom-utils/src/mergeProps.ts` (react-aria + zag 참고 명시) |
-| 요소 크기 관찰 | Radix `packages/react/use-size/`, SEED `react-headless/slider/src/useElementSizesMap.ts` (다중 요소 확장) |
-| Portal | Radix `packages/react/portal/src/`, SEED `react-headless/portal/` |
-| enter/exit 언마운트 지연 | Radix `packages/react/presence/src/`, SEED `react-headless/presence/` (Radix 포팅) |
+| prop 병합 | Base UI `packages/react/src/merge-props/` (이벤트 핸들러 체이닝, className/style 병합 규칙) |
+| 요소 크기 관찰 | Radix `packages/react/use-size/` |
+| Portal | Radix `packages/react/portal/src/` |
+| enter/exit 언마운트 지연 | Radix `packages/react/presence/src/` (computed `animationName` 스니핑), Base UI `packages/react/src/utils/` |
+
+이 유틸들은 라이브러리마다 거의 같은 문제를 푼다. 직접 만들기 전에 Radix 것을 먼저 읽으면 어떤 엣지케이스가 있는지 목록을 얻는다.

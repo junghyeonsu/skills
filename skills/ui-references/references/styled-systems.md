@@ -6,12 +6,10 @@
 
 ## shadcn/ui — 1순위 (배포 모델)
 
-라이브러리가 아니라 **소스를 복사해 넣는 registry**. 이 모델 자체가 이 분야에서 가장 영향력 있는 아이디어였고, SEED의 snippet registry도 여기서 영감을 받았다.
+라이브러리가 아니라 **소스를 복사해 넣는 registry**. 이 모델 자체가 이 분야에서 가장 영향력 있는 아이디어였고, 이후 나온 여러 시스템이 이 배포 방식을 따라갔다.
 
 **볼 때**: registry JSON 스키마, CLI로 컴포넌트를 주입하는 방식, 여러 primitive base를 동시에 지원하는 구조.
 **안 볼 때**: 헤드리스 로직 자체 (shadcn은 Radix/Base UI/react-aria를 조합할 뿐이다).
-
-> **CLI 4.13.0(2026-07)부터 base-ui가 기본 primitive다** — Radix가 아니다. 생태계의 무게중심이 옮겨가는 신호로 읽을 만하다. 이후 `addRegistryItems` 공개 API(4.15, CLI 없이 프로그램적 설치)와 `package.json`의 `registries` 필드(4.16)가 추가됐다.
 
 ```
 repo: shadcn-ui/ui
@@ -24,7 +22,7 @@ cli: packages/shadcn/src/
 updates: https://github.com/shadcn-ui/ui/releases
 ```
 
-> 구조가 개편됐다: 예전 `apps/www/registry/...` 경로는 없어졌고 `apps/v4/` 하나만 남았다. 오래된 블로그/문서의 경로는 그대로 안 먹는다.
+> **함정**: 외부 문서·블로그가 흔히 안내하는 `apps/www/registry/...` 경로는 더 이상 없다. `apps/v4/` 아래만 보면 된다.
 
 fetch 예시:
 `https://raw.githubusercontent.com/shadcn-ui/ui/main/apps/v4/registry/new-york-v4/ui/select.tsx`
@@ -32,20 +30,16 @@ fetch 예시:
 훔칠 포인트:
 - `apps/v4/registry/bases/` — **같은 컴포넌트를 react-aria / Base UI / Radix 세 base 위에 각각 구현해 둔 구조.** primitive를 갈아끼울 수 있게 만든 접근이고, 같은 UI를 세 라이브러리로 비교해 읽기에 최적의 자료다
 - `apps/v4/registry/.../registry.ts` + `directory.json` — 항목 메타(의존성, 파일 목록, 타입)를 어떻게 기술하는가
-- `packages/shadcn/src/` — CLI가 항목을 해석해 프로젝트에 쓰는 절차 (SEED CLI와 비교)
-
-SEED 대응: `docs/registry/react/ui/` (59개 snippet), `docs/registry/lynx/ui/` (7개), `__registry__/{framework}/`로 배포. framework 스코핑이 shadcn엔 없는 축이다.
+- `packages/shadcn/src/` — CLI가 항목을 해석해 의존성을 풀고 파일을 쓰는 절차
 
 ---
 
 ## Park UI
 
-Ark UI(=Zag) + Panda 조합의 완성형. **SEED와 구조적으로 가장 가까운 오픈소스**다: 헤드리스 로직 + recipe 스타일 레이어 + 토큰이 분리된 3층 구조.
-
-**유지 상태**: 최근 푸시 2026-04로 다소 정체. 구조 참고용으로는 여전히 유효하다.
+Ark UI(=Zag) + Panda 조합의 완성형. **헤드리스 로직 + recipe 스타일 레이어 + 토큰이 3층으로 분리된 구조**의 참고 사례다.
 
 **볼 때**: "헤드리스 + recipe + 토큰"을 하나의 제품으로 묶는 방법, Panda recipe를 컴포넌트별로 배치하는 방식.
-**안 볼 때**: 최신 유지보수가 필요한 프로덕션 의존성으로.
+**안 볼 때**: 프로덕션 의존성으로 — 업데이트 주기가 느린 편이라 채택 전에 현재 활성도를 확인할 것.
 
 ```
 repo: cschroeter/park-ui
@@ -74,7 +68,7 @@ tokens: packages/react/src/theme/tokens/, semantic-tokens/
 updates: https://github.com/chakra-ui/chakra-ui/releases
 ```
 
-훔칠 포인트: `packages/react/src/theme/recipes/` — 여러 파트를 가진 컴포넌트의 스타일을 하나의 slot recipe로 묶는 실제 사례가 수십 개 있다. 어떤 게 단일이고 어떤 게 슬롯인지는 `slot-recipes.export.ts`가 목록으로 보여준다(`accordionSlotRecipe`처럼 `./recipes/<name>`에서 재수출). qvism recipe 작성 시 비교 대상.
+훔칠 포인트: `packages/react/src/theme/recipes/` — 여러 파트를 가진 컴포넌트의 스타일을 하나의 slot recipe로 묶는 실제 사례가 수십 개 있다. 어떤 게 단일이고 어떤 게 슬롯인지는 `slot-recipes.export.ts`가 목록으로 보여준다(`accordionSlotRecipe`처럼 `./recipes/<name>`에서 재수출).
 
 ---
 
@@ -82,7 +76,6 @@ updates: https://github.com/chakra-ui/chakra-ui/releases
 
 Radix Primitives 위에 공식 스타일을 얹은 것.
 
-**유지 상태**: 2026-04 이후 정체.
 **볼 때**: 색상 스케일 시스템(radix-colors의 1~12단계 의미론 — 배경/경계/텍스트 역할이 번호에 고정)이 특히 참고할 만하다.
 
 ```
@@ -113,7 +106,7 @@ updates: https://github.com/heroui-inc/heroui/releases
 
 ## Mantine
 
-React 컴포넌트 세트 중 커버리지가 가장 넓은 편(100+). CSS Modules 기반.
+React 컴포넌트 세트 중 커버리지가 가장 넓은 축. CSS Modules 기반.
 
 ```
 repo: mantinedev/mantine
@@ -125,17 +118,3 @@ updates: https://github.com/mantinedev/mantine/releases
 **볼 때**: "이 컴포넌트를 사람들이 실제로 어떤 API로 쓰나"의 넓은 표본. 흔치 않은 컴포넌트(Spotlight, Dropzone, RichTextEditor 등)의 API 참고.
 **안 볼 때**: 헤드리스 설계 (Mantine은 스타일과 로직이 붙어 있다).
 
----
-
-## SEED react
-
-```
-repo: daangn/seed-design
-branch: dev             ← main 아님, 주의
-components: packages/react/src/components/<Component>/     (84개)
-lynx: packages/lynx-react/src/components/<Component>/       (13개)
-registry: docs/registry/{react,lynx}/ui/
-cli: packages/cli/src/
-```
-
-구조: `react-headless`(로직) + `qvism-preset`(recipe) + `rootage`(토큰) 3층 위에 얹힌 스타일드 레이어. shadcn식 snippet registry로도 배포하며, framework 스코핑(`react`/`lynx`)이 추가돼 있다.

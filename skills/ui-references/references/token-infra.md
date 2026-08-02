@@ -28,7 +28,7 @@ fetch 예시:
 - `lib/common/formats.js` — 같은 토큰을 CSS 변수/SCSS 맵/Swift enum/Kotlin object로 내보내는 포맷터들
 - 참조 해석 로직 — 토큰이 다른 토큰을 가리킬 때의 순환 참조 검출
 
-rootage와 비교: rootage도 YAML → 여러 산출물(css vars, qvism vars, 타입) 파이프라인이다. Style Dictionary가 **플랫폼 다양성**(iOS/Android까지)에 최적화된 반면 rootage는 **컴포넌트 스펙까지 포함**(단순 토큰이 아니라 ComponentSpec)한다는 차이가 있다. 네이티브 플랫폼 확장을 검토할 때 이쪽 transform 목록이 체크리스트가 된다.
+자체 파이프라인과 비교할 축: Style Dictionary는 **플랫폼 다양성**(웹뿐 아니라 iOS/Android/Flutter)에 최적화돼 있다. 웹만 대상이면 과한 반면, 네이티브 확장을 검토하는 시점엔 이쪽 transform 목록이 그대로 체크리스트가 된다.
 
 ---
 
@@ -48,7 +48,7 @@ updates: https://github.com/design-tokens/community-group/releases
 
 핵심 개념: `$value`/`$type`/`$description`, 그룹 중첩, `{alias.reference}` 참조, composite 토큰(shadow, typography처럼 여러 값을 묶은 것).
 
-rootage YAML은 DTCG와 다른 자체 포맷이다(`values: { theme-light: …, theme-dark: … }` 형태로 테마를 값에 내장). **DTCG는 테마를 파일 분리로 표현**하는 쪽이라 구조가 다르니, 상호 변환을 검토한다면 이 차이가 첫 관문이다.
+자체 포맷을 쓰다가 상호 변환을 검토할 때 첫 관문은 보통 **테마를 어디에 두는가**다. DTCG는 테마를 파일/그룹 분리로 표현하는 쪽인데, 토큰 하나의 값 안에 모드별 값을 내장하는 포맷(`{ light: …, dark: … }`)과는 구조가 어긋난다.
 
 ---
 
@@ -67,7 +67,7 @@ plugins: packages/plugin-css/src/, packages/plugin-js/src/
 updates: https://github.com/terrazzoapp/terrazzo/releases
 ```
 
-훔칠 포인트: `packages/parser/src/` — DTCG 문서를 파싱·검증하는 구현. rootage core의 검증 계층(hand-written parser/analyzer)과 비교해 읽을 만하다.
+훔칠 포인트: `packages/parser/src/` — DTCG 문서를 파싱·검증하는 구현. 토큰 검증 계층을 직접 짤 때 참고할 만하다.
 
 ---
 
@@ -83,7 +83,7 @@ branch: main
 updates: https://github.com/tokens-studio/figma-plugin/releases
 ```
 
-SEED는 자체 `figma:sync` 경로(Figma 변수 → rootage YAML)를 쓰고 있어 직접 대체재는 아니지만, **동기화 충돌 해결 UX**(양쪽이 동시에 바뀌었을 때)를 어떻게 다루는지가 참고 지점이다.
+Figma 변수를 직접 읽어 자체 동기화 경로를 만든 경우엔 대체재가 아니지만, **동기화 충돌 해결 UX**(디자인과 코드가 동시에 바뀌었을 때 무엇을 이기게 할 것인가)를 어떻게 다루는지가 참고 지점이다.
 
 ---
 
@@ -105,19 +105,3 @@ scales: src/
 
 **oklch 등 지각적 색공간으로 팔레트를 만드는 방법**은 이 파일이 아니라 색상 스킬 쪽이 정본이다 — [skill-collections.md](skill-collections.md) 참고.
 
----
-
-## SEED rootage
-
-```
-repo: daangn/seed-design
-branch: dev             ← main 아님, 주의
-tokens: packages/rootage/*.yaml
-component-specs: packages/rootage/components/*.yaml
-core: ecosystem/rootage-core/src/
-generated: packages/css/vars/, packages/qvism-preset/src/vars/    ← 직접 수정 금지
-```
-
-다른 도구와 다른 점: 토큰뿐 아니라 **ComponentSpec**(슬롯·variant·상태별 값)까지 같은 스키마 체계로 기술한다. 즉 "이 컴포넌트의 brandSolid variant에서 root 슬롯의 배경색"까지 YAML에 있고, 거기서 recipe와 타입이 생성된다. Style Dictionary/Terrazzo는 토큰까지만 다룬다.
-
-검증 컨벤션: rootage core는 zod를 쓰지 않고 hand-written parser(throw)/analyzer(ValidationResult) 구조다. 새 스펙 검증을 추가할 때 이 관례를 따른다.

@@ -9,13 +9,15 @@ description: UI/디자인시스템 구현 레퍼런스 아카이브. 컴포넌�
 
 수록된 내용은 **포인터**다. 코드를 복사해 두지 않고 `org/repo` + 경로만 적어두며, 실제 코드는 그때그때 fetch해서 읽는다.
 
+**빨리 낡는 것은 담지 않는다.** 버전 번호, 별 수, 최근 푸시 날짜, "요즘 활발한가" 같은 판단은 여기 없다. 그런 건 4번의 업데이트 다이제스트로 그때그때 조회한다. 이 문서가 담는 것은 **설계 판단**(무엇이 갈리는 지점인가)과 **어디를 볼 것인가**뿐이다.
+
 ## 1. 어디부터 볼까
 
 | 하려는 일 | 1순위 | 참조 파일 |
 | --- | --- | --- |
 | 특정 컴포넌트 구현 참고 | (컴포넌트 인덱스에서 찾기) | `lookup-*.md` |
 | headless 훅 API 설계 | Base UI | [headless-primitives.md](references/headless-primitives.md) |
-| 프레임워크 무관 상태 로직 (Lynx 포팅 등) | Zag | [state-machines.md](references/state-machines.md) |
+| 프레임워크 무관 상태 로직 · 다른 런타임 포팅 | Zag | [state-machines.md](references/state-machines.md) |
 | ARIA·키보드·i18n 정확도 | React Aria + W3C APG | [behavior-hooks.md](references/behavior-hooks.md) |
 | 저수준 유틸 (floating, scroll lock, focus trap) | floating-ui, react-remove-scroll | [behavior-hooks.md](references/behavior-hooks.md) |
 | recipe / variant 스타일 시스템 | Panda, Chakra v3 | [styling-recipes.md](references/styling-recipes.md) |
@@ -25,7 +27,7 @@ description: UI/디자인시스템 구현 레퍼런스 아카이브. 컴포넌�
 | 토큰 파이프라인 / DTCG | Style Dictionary, DTCG spec | [token-infra.md](references/token-infra.md) |
 | 문서 사이트 구조·IA | (사이트별 비교) | [docs-sites.md](references/docs-sites.md) |
 | 모션·디자인 원칙 맥락 주입 | **설치된 스킬 우선** | [skill-collections.md](references/skill-collections.md) |
-| 레퍼런스들 최근 업데이트 | — | 아래 5번 절차 |
+| 레퍼런스들 최근 업데이트 | — | 아래 4번 절차 |
 
 **교차 검증 룰**: 새 컴포넌트를 설계할 때는 최소 2개 소스를 비교한다. 한 라이브러리의 API를 그대로 베끼면 그 라이브러리의 제약까지 함께 들어온다.
 
@@ -64,7 +66,7 @@ description: UI/디자인시스템 구현 레퍼런스 아카이브. 컴포넌�
 
 1. **단일 파일** — raw URL을 WebFetch:
    `https://raw.githubusercontent.com/{org}/{repo}/{branch}/{path}`
-   브랜치는 레포마다 다르다. 각 엔트리의 `branch:` 값을 쓸 것 (`main`이 아닌 곳이 많다: base-ui·embla·floating-ui·input-otp는 `master`, seed-design은 `dev`, TanStack/table은 `beta`).
+   브랜치는 레포마다 다르다. 각 엔트리의 `branch:` 값을 쓸 것 (`main`이 아닌 곳이 많다: base-ui·embla·floating-ui·input-otp는 `master`, TanStack/table은 `beta`, HeroUI는 `v3`).
 2. **404거나 디렉토리 목록이 필요할 때** — 리스팅으로 재발견:
    `gh api repos/{org}/{repo}/contents/{path} --jq '.[].name'`
 3. **본격 탐색 (여러 파일을 훑어야 할 때)** — scratchpad에 부분 클론:
@@ -78,16 +80,11 @@ description: UI/디자인시스템 구현 레퍼런스 아카이브. 컴포넌�
 
 경로가 404를 내면 그건 이 문서가 낡은 것이다. 2번으로 재발견한 뒤 **이 스킬의 해당 엔트리를 고쳐라.** 고치지 않으면 다음에 또 같은 404를 만난다.
 
-## 4. seed-design 레포에서 쓸 때
-
-- **차용 여부 판단**은 이 스킬이 아니라 레포 스킬이 정본이다: `skills/create-component/references/external-references.md`. 충돌하면 레포 쪽을 따른다. 이 스킬은 "어디에 무엇이 있고 어떻게 읽는가"만 담당한다.
-- 구현 전에 **`packages/react-headless/`의 기존 포팅 귀속 헤더**를 먼저 확인한다. 파일 1행에 `// This code includes portions derived from …` 형식으로 출처가 적혀 있고, 이미 포팅된 것을 다시 설계하면 낭비다.
-
-## 5. 업데이트 다이제스트
+## 4. 업데이트 다이제스트
 
 "지난 한 달 레퍼런스 업데이트 뭐 있었어?" 같은 요청 절차.
 
-1. 대상 레포 목록 추출 — 각 참조 파일의 `repo:` 고정 라인이 단일 출처다. 이 스킬이 설치된 디렉토리의 `references/`에 대고 실행한다:
+1. 대상 레포 목록 추출 — 각 참조 파일의 `repo:` 고정 라인이 단일 출처다:
    ```bash
    grep -rh '^repo:' <이 스킬 디렉토리>/references/ | sed 's/^repo: *//' | sort -u
    ```
@@ -102,7 +99,7 @@ description: UI/디자인시스템 구현 레퍼런스 아카이브. 컴포넌�
 
 기간이 명시되지 않으면 30일. 대상이 많으므로 릴리스 조회는 병렬로 묶어 실행한다.
 
-## 6. 참조 파일
+## 5. 참조 파일
 
 | 파일 | 담는 것 | 언제 읽는가 |
 | --- | --- | --- |
@@ -110,7 +107,7 @@ description: UI/디자인시스템 구현 레퍼런스 아카이브. 컴포넌�
 | [lookup-overlays.md](references/lookup-overlays.md) | 오버레이 계열 + focus/scroll 유틸 | Dialog/Drawer/Menu/Toast/Tooltip을 만들 때 |
 | [lookup-collections.md](references/lookup-collections.md) | 컬렉션 계열 | Carousel/Tabs/Table/Virtual/Command를 만들 때 |
 | [headless-primitives.md](references/headless-primitives.md) | 헤드리스 라이브러리 레포 맵 | 훅 API·컴파운드 구조를 설계할 때 |
-| [state-machines.md](references/state-machines.md) | Zag 상태머신 | 프레임워크 무관 로직이 필요할 때 (Lynx 등) |
+| [state-machines.md](references/state-machines.md) | Zag 상태머신 | 프레임워크 무관 로직이 필요할 때 |
 | [behavior-hooks.md](references/behavior-hooks.md) | 저수준 훅·유틸 | ARIA/i18n 정확도, floating·focus·scroll 처리 |
 | [styling-recipes.md](references/styling-recipes.md) | recipe/variant 스타일 레이어 | 스타일 API·variant 스키마를 설계할 때 |
 | [styled-systems.md](references/styled-systems.md) | 완성형 시스템·registry | 조립 방식·배포(CLI/registry)를 볼 때 |
@@ -119,4 +116,4 @@ description: UI/디자인시스템 구현 레퍼런스 아카이브. 컴포넌�
 | [docs-sites.md](references/docs-sites.md) | 문서 사이트 IA | 문서 구조를 짤 때 |
 | [skill-collections.md](references/skill-collections.md) | 디자인 스킬 레포 카탈로그 | 분야 맥락 주입·새 스킬을 찾을 때 |
 
-*실측 기준: 2026-08-02. 별 수·최근 푸시 등은 그때의 값이다.*
+*경로와 브랜치는 검증 스크립트(`evals/verify-refs.sh`)가 실측한 값이다. 404를 만나면 문서가 낡은 것이니 재발견 후 고칠 것.*

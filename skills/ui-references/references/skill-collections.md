@@ -4,7 +4,7 @@
 
 **이 파일의 역할은 카탈로그와 출처 추적까지다.** 설치된 스킬의 내용은 그 스킬 자신이 정본이므로 여기 요약하지 않는다. 모션 판단이 필요하면 이 파일을 읽지 말고 해당 스킬을 직접 호출할 것.
 
-아래 표의 "설치됨" 열은 이 스킬을 쓰는 환경 기준이며 2026-08-02에 확인한 값이다. 현재 상태는 `ls ~/.claude/skills/`로 다시 확인할 것.
+쓰기 전에 `ls ~/.claude/skills/`로 이미 설치돼 있는지 본다. 설치돼 있으면 그 스킬을 직접 호출하고, 없으면 아래 설치 명령을 쓴다.
 
 ---
 
@@ -20,16 +20,16 @@ install: npx skills add emilkowalski/skills
 updates: https://github.com/emilkowalski/skills/releases
 ```
 
-| 스킬 | 커버리지 | 설치됨 |
-| --- | --- | --- |
-| `emil-design-eng` | UI 폴리시·컴포넌트 설계·애니메이션 판단의 철학 | ✅ |
-| `apple-design` | Apple식 제스처·스프링·물성을 웹으로 옮기기 | ✅ |
-| `animation-vocabulary` | 모션 효과의 이름을 역으로 찾기 ("통통 튀는 그거" → Pop in) | ✅ |
-| `find-animation-opportunities` | 애니메이션이 없지만 있어야 할 곳 탐색 (읽기 전용) | ✅ |
-| `improve-animations` | 코드베이스 모션 감사 + 실행 계획 산출 | ✅ |
-| `review-animations` | 모션 코드 리뷰 (높은 기준으로 flag) | ✅ |
-| `prototype` | 여러 버전을 만들어 시각적으로 비교 | ✅ |
-| `pick-ui-library` | 작업별 라이브러리 추천 (숫자·OTP·차트·커맨드·가상화 등) | ❌ **미설치** |
+| 스킬 | 커버리지 |
+| --- | --- |
+| `emil-design-eng` | UI 폴리시·컴포넌트 설계·애니메이션 판단의 철학 |
+| `apple-design` | Apple식 제스처·스프링·물성을 웹으로 옮기기 |
+| `animation-vocabulary` | 모션 효과의 이름을 역으로 찾기 ("통통 튀는 그거" → Pop in) |
+| `find-animation-opportunities` | 애니메이션이 없지만 있어야 할 곳 탐색 (읽기 전용) |
+| `improve-animations` | 코드베이스 모션 감사 + 실행 계획 산출 |
+| `review-animations` | 모션 코드 리뷰 (높은 기준으로 flag) |
+| `prototype` | 여러 버전을 만들어 시각적으로 비교 |
+| `pick-ui-library` | 작업별 라이브러리 추천 (숫자·OTP·차트·커맨드·가상화 등) |
 
 **언제 참고**: 모션 작업의 맥락 주입, 애니메이션 값 결정, UI 디테일 판단.
 
@@ -56,15 +56,15 @@ install: npx skills add jakubkrehel/skills   (또는 플러그인: /plugin marke
 updates: https://github.com/jakubkrehel/skills/releases
 ```
 
-| 스킬 | 커버리지 | 설치됨 |
-| --- | --- | --- |
-| `better-interface` | 오케스트레이터. 6개 도메인을 순서대로 돌려 하나의 리뷰로 통합 | ❌ |
-| `better-accessibility` | 포커스·키보드·ARIA·폼·스크린리더·히트영역·모션 | ❌ |
-| `better-layout` | 그룹핑·정렬·간격·반응형·논리 속성·RTL | ❌ |
-| `better-writing` | UX 라이팅 (버튼 라벨, 에러, 빈 상태, 설정) | ❌ |
-| `better-typography` | 폰트 선택·스케일·줄바꿈·문장부호·가변폰트 | ❌ |
-| `better-colors` | OKLCH·팔레트 생성·대비(APCA/WCAG)·gamut·테마 | ❌ |
-| `better-ui` | 시각 폴리시 (radius·그림자·아이콘·모션) | ❌ |
+| 스킬 | 커버리지 |
+| --- | --- |
+| `better-interface` | 오케스트레이터. 6개 도메인을 순서대로 돌려 하나의 리뷰로 통합 |
+| `better-accessibility` | 포커스·키보드·ARIA·폼·스크린리더·히트영역·모션 |
+| `better-layout` | 그룹핑·정렬·간격·반응형·논리 속성·RTL |
+| `better-writing` | UX 라이팅 (버튼 라벨, 에러, 빈 상태, 설정) |
+| `better-typography` | 폰트 선택·스케일·줄바꿈·문장부호·가변폰트 |
+| `better-colors` | OKLCH·팔레트 생성·대비(APCA/WCAG)·gamut·테마 |
+| `better-ui` | 시각 폴리시 (radius·그림자·아이콘·모션) |
 
 전부 미설치. **`better-colors`는 토큰 팔레트를 만들 때, `better-accessibility`는 헤드리스 컴포넌트를 만들 때 특히 맞물린다** — 필요하면 그때 개별 설치하는 게 낫다(`--skill better-colors` 식).
 

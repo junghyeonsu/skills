@@ -19,8 +19,6 @@ Carousel, Tabs, Accordion, Virtual, Table, Command, TreeView/Listbox.
 - `chakra-ui/zag` — `packages/machines/carousel/src/` (`carousel.machine.ts`, `carousel.anatomy.ts`)
 - `chakra-ui/ark` — `packages/react/src/components/carousel/` (slot 분해: item-group / indicator-group / autoplay-trigger)
 
-SEED: 독립 Carousel 컴포넌트는 없지만 **embla를 이미 쓰고 있다.** `packages/react-headless/tabs/`가 `embla-carousel-react` + `embla-carousel-auto-height`에 의존하고, `src/useTabsCarousel.ts`에 실전 워크어라운드가 쌓여 있다 — WKWebView 관성 스크롤을 깨지 않는 `watchResize` 높이 변화 감지, `data-embla-prevent-drag`(`src/dom.ts`)로 중첩 스크롤 영역을 드래그에서 제외, 탭 전환 스냅용 임계감쇠 스프링 파라미터(duration 4 / friction 0.4). 새 Carousel은 여기부터 읽고 시작할 것. `ScrollFog`·`Scrollable`이 인접 개념.
-
 ---
 
 ## Tabs / SegmentedControl
@@ -33,8 +31,6 @@ SEED: 독립 Carousel 컴포넌트는 없지만 **embla를 이미 쓰고 있다.
 - `radix-ui/primitives` — `packages/react/tabs/src/tabs.tsx`, `packages/react/roving-focus/src/` (roving tabindex 공통 구현 — 여기가 재사용 가치 높음)
 - `mui/base-ui` (**branch: master**) — `packages/react/src/tabs/`, `packages/react/src/toggle-group/`
 - `chakra-ui/zag` — `packages/machines/tabs/src/`
-
-SEED: `daangn/seed-design` (**branch: dev**) — `packages/react-headless/tabs/src/`, `segmented-control/src/`
 
 ---
 
@@ -52,8 +48,6 @@ SEED: `daangn/seed-design` (**branch: dev**) — `packages/react-headless/tabs/s
 - `radix-ui/primitives` — `packages/react/accordion/src/`, `packages/react/collapsible/src/`
 - `chakra-ui/zag` — `packages/machines/accordion/src/`
 
-SEED: `daangn/seed-design` (dev) — `packages/react-headless/accordion/src/`, `collapsible/src/`
-
 ---
 
 ## 가상 스크롤 (Virtual)
@@ -67,8 +61,6 @@ SEED: `daangn/seed-design` (dev) — `packages/react-headless/accordion/src/`, `
 포인터:
 - `TanStack/virtual` — `repo: TanStack/virtual` — `packages/virtual-core/src/index.ts` (프레임워크 무관 코어), `packages/react-virtual/src/`
 
-SEED: 없음.
-
 ---
 
 ## Table / DataGrid
@@ -81,8 +73,6 @@ SEED: 없음.
 - `TanStack/table` (**branch: beta** — main 아님 주의) — `repo: TanStack/table` — `packages/table-core/src/features/` (정렬·필터 등 기능별 분리 구조가 참고할 만함)
 - `adobe/react-spectrum` — `packages/react-aria/src/grid/`, `packages/react-aria/src/table/` (그리드 키보드 모델)
 
-SEED: 없음.
-
 ---
 
 ## Command / CommandPalette
@@ -91,13 +81,11 @@ SEED: 없음.
 
 갈리는 지점 — **필터링을 누가 하는가**: cmdk는 기본적으로 자체 점수 기반 필터를 내장하되 `shouldFilter={false}`로 서버 필터링에 넘길 수 있다. 비동기 검색이면 반드시 후자.
 
-주의: 최근 푸시가 2025-10로 다소 뜸하다. 유지보수 상태를 확인하고 쓸 것.
+주의: 업데이트 주기가 느린 편이다. 새로 의존성으로 넣을 거면 현재 활성도를 확인하고 쓸 것.
 
 포인터:
 - `pacocoursey/cmdk` — `repo: pacocoursey/cmdk` — `cmdk/src/index.tsx` (`score` 함수와 항목 등록 방식이 핵심)
 - `facebook/astryx` — `packages/core/src/CommandPalette/` (완성형 구현 비교용)
-
-SEED: 없음.
 
 ---
 
@@ -111,8 +99,6 @@ SEED: 없음.
 - `chakra-ui/zag` — `packages/machines/tree-view/src/`, `packages/machines/listbox/src/`
 - `adobe/react-spectrum` — `packages/react-aria/src/tree/`, `packages/react-stately/src/tree/`
 - `radix-ui/primitives` — `packages/react/collection/src/` (컬렉션 추상화 자체가 볼 만함)
-
-SEED: 없음 (`side-navigation`이 인접).
 
 ---
 

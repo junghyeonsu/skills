@@ -24,8 +24,6 @@ Select/Combobox, DatePicker, OTP, NumberField, Slider, FileUpload, Field.
 - `radix-ui/primitives` — `packages/react/select/src/`
 - `adobe/react-spectrum` — `packages/react-aria/src/combobox/useComboBox.ts`, `packages/react-stately/src/combobox/`
 
-SEED: `daangn/seed-design` (**branch: dev**) — `packages/react-headless/select/src/`. Radix FocusScope 연계와 floating 처리에 주석이 많다.
-
 ---
 
 ## DatePicker / Calendar / DateInput
@@ -37,8 +35,6 @@ SEED: `daangn/seed-design` (**branch: dev**) — `packages/react-headless/select
 포인터:
 - `adobe/react-spectrum` — `packages/@internationalized/date/src/` (**여기가 핵심**), `packages/react-aria/src/calendar/useCalendar.ts`, `packages/react-aria/src/datepicker/useDateField.ts`, `packages/react-stately/src/datepicker/`
 - `chakra-ui/zag` — `packages/machines/date-picker/src/`, `packages/machines/date-input/src/`
-
-SEED: 없음. 만든다면 `@internationalized/date`를 의존으로 쓸지부터 정해야 한다 (번들 크기 vs 정확성).
 
 ---
 
@@ -60,8 +56,6 @@ SEED: 없음. 만든다면 `@internationalized/date`를 의존으로 쓸지부�
 - `chakra-ui/zag` — `packages/machines/pin-input/src/pin-input.machine.ts`, `pin-input.connect.ts`. anatomy = `root/label/input/control`. `blurOnComplete`, `selectOnFocus` 같은 부가 옵션이 여기만 있다
 - `guilhermerodz/input-otp` (**branch: master**) — `repo: guilhermerodz/input-otp` — `packages/input-otp/src/input.tsx`. **차용용이 아니라 iOS/PWM 함정 카탈로그로 읽을 것** — 주석에 실측 근거(edit menu가 400ms엔 죽고 1500ms엔 살더라 등)가 남아 있다. `use-pwm-badge.tsx`는 비밀번호 관리자 배지 회피
 
-SEED: 없음. `packages/react-headless/`의 "스타일 로직 금지" 규칙 때문에 input-otp 방식은 채택 불가 — Base UI/Radix 계열이 사실상 유일한 선택지다.
-
 ---
 
 ## NumberField / 숫자 표시
@@ -76,13 +70,11 @@ SEED: 없음. `packages/react-headless/`의 "스타일 로직 금지" 규칙 때
 - `mui/base-ui` (master) — `packages/react/src/number-field/`
 - `barvian/number-flow` — `repo: barvian/number-flow` — 숫자 전환 애니메이션 전용
 
-SEED: `daangn/seed-design` (dev) — `packages/react-headless/quantity-picker/src/` (수량 조절 UI, 범용 NumberField와는 다름)
-
 ---
 
 ## Slider / RangeSlider
 
-**1순위: Radix** (SEED가 이미 포팅한 계보). 다중 thumb, 스텝 스냅, 키보드 증감, RTL 처리가 검증돼 있다.
+**1순위: Radix.** 다중 thumb, 스텝 스냅, 키보드 증감, RTL 처리가 검증돼 있다.
 
 갈리는 지점 — **다중 thumb 지원 방식**: Radix는 `value` 배열로 thumb 개수를 결정. React Aria는 `useSliderThumb`를 thumb마다 호출하는 구조. 후자가 thumb별 라벨/제약을 다르게 주기 쉽다.
 
@@ -91,8 +83,6 @@ SEED: `daangn/seed-design` (dev) — `packages/react-headless/quantity-picker/sr
 - `adobe/react-spectrum` — `packages/react-aria/src/slider/useSlider.ts`, `useSliderThumb.ts`
 - `chakra-ui/zag` — `packages/machines/slider/src/`, `packages/machines/angle-slider/src/` (원형 슬라이더)
 - `mui/base-ui` (master) — `packages/react/src/slider/`
-
-SEED: `daangn/seed-design` (dev) — `packages/react-headless/slider/src/useSlider.ts` — **Radix 포팅 + 확장**. 파일 1행에 귀속 헤더가 있고, `useElementSizesMap.ts`는 Radix `useSize`를 여러 요소용으로 확장한 것이다. 여기 손대기 전에 원본과 대조할 것.
 
 ---
 
@@ -105,8 +95,6 @@ SEED: `daangn/seed-design` (dev) — `packages/react-headless/slider/src/useSlid
 포인터:
 - `chakra-ui/zag` — `packages/machines/file-upload/src/file-upload.connect.ts`, `file-upload.machine.ts`
 - `chakra-ui/ark` — `packages/react/src/components/file-upload/`
-
-SEED: `daangn/seed-design` (dev) — `packages/react-headless/file-upload/src/useFileUpload.ts` — **Zag 참조 이력이 주석에 명시**돼 있다(`// see: .../zag/.../file-upload.connect.ts`). 관련 컴포넌트로 `attachment-display`도 있다.
 
 ---
 
@@ -121,4 +109,3 @@ SEED: `daangn/seed-design` (dev) — `packages/react-headless/file-upload/src/us
 - `radix-ui/primitives` — `packages/react/form/src/`
 - `adobe/react-spectrum` — `packages/react-aria/src/form/`
 
-SEED: `daangn/seed-design` (dev) — `packages/react-headless/field/src/`, `fieldset/`, `text-field/`, `field-button/`

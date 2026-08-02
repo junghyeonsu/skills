@@ -54,7 +54,7 @@ SKILL.md는 라우터이므로 어느 시나리오에서든 읽어도 된다. B�
 
 - 기대 읽기: `references/styling-recipes.md`
 - 금지: lookup 파일들
-- 기대 내용: Panda 1순위, CVA는 slot 없음, SEED qvism과의 차이(rootage가 원천)
+- 기대 내용: Panda 1순위, CVA는 slot 없음, "recipe가 원천인가 생성물인가" 축이 나올 것
 
 ### S4. 문서 구조 — 문서 축 라우팅
 
@@ -77,7 +77,7 @@ SKILL.md는 라우터이므로 어느 시나리오에서든 읽어도 된다. B�
 
 > 지난 한 달간 레퍼런스 레포들에 어떤 업데이트가 있었는지 정리해줘.
 
-- 기대 동작: SKILL.md 5번 절차 실행 — `grep '^repo:'`로 목록 추출 → `gh api releases`(또는 커밋 폴백)
+- 기대 동작: SKILL.md 4번 절차 실행 — `grep '^repo:'`로 목록 추출 → `gh api releases`(또는 커밋 폴백)
 - 금지: 참조 파일들을 전부 통독하는 것 (grep으로 충분)
 - 기대 내용: **변경 없는 레포는 생략**. Radix처럼 릴리스를 안 쓰는 레포에서 커밋으로 폴백하는지 확인
 
@@ -106,16 +106,14 @@ SKILL.md는 라우터이므로 어느 시나리오에서든 읽어도 된다. B�
 | S5 모션 | `skill-collections.md` ✓ | ✓ | ✓ (설치된 스킬로 위임 안내) |
 | S6 다이제스트 | grep만 사용 ✓ | ✓ (통독 안 함) | ✓ (Radix는 릴리스 없어 npm/커밋으로 폴백) |
 
-B 판정 시 seed-design 레포 파일(`skills/create-component/...`, `packages/react-headless/AGENTS.md`)을 읽은 것은 노이즈로 세지 않았다 — SKILL.md 4번이 지시한 동작이다.
+B 판정 대상은 이 스킬의 `references/` 파일이다. 에이전트가 작업 중인 프로젝트의 파일을 읽은 것은 노이즈로 세지 않았다.
 
 **eval이 문서의 사실 오류 2건을 잡았고, 소스로 반증된 뒤 수정됨:**
 
 1. **OTP** — "칸마다 `<input>`을 두면 SMS 자동완성이 깨진다"는 서술이 **틀렸다.** Base UI/Radix는 첫 칸에만 `autoComplete="one-time-code"` + `maxLength={length}`를 걸어 자동완성을 살린다(Base UI `OTPFieldInput.tsx`에 주석까지 있음). 진짜 트레이드오프는 자동완성이 아니라 input-otp의 스타일-로직 결합이었다. → 1순위를 Base UI+Radix로 바꾸고 근거를 교체
-2. **Carousel** — "SEED: 없음"이 **틀렸다.** `packages/react-headless/tabs/src/useTabsCarousel.ts`에 embla 기반 구현이 이미 있고 실전 워크어라운드가 축적돼 있다. 겸사 embla 파일명 `SnapPoint`(실재 안 함) → `ScrollSnaps`/`ScrollSnapList`로 정정
+2. **Carousel** — embla 핵심 파일로 적어둔 `SnapPoint`가 **실재하지 않았다.** 실제 파일명은 `ScrollSnaps`/`ScrollSnapList`. 기억으로 쓴 파일명은 그럴듯해도 틀린다.
 
 교훈: **검증 없이 쓴 "왜"는 틀릴 수 있다.** 포인터(경로)는 스크립트가 잡지만 판정 근거는 eval이 소스를 읽어야 잡힌다. 새 항목을 추가할 때 근거를 추측으로 쓰지 말 것.
-
-또한 S6이 문서에 없던 최신 변화를 물어와 반영했다: shadcn CLI 4.13부터 base-ui가 기본 primitive, Zag v2의 `data-*` 병합(Lynx 셀렉터 미지원과 충돌).
 
 ## 포인터 유효성 검사
 
@@ -124,8 +122,6 @@ B 판정 시 seed-design 레포 파일(`skills/create-component/...`, `packages/
 ```bash
 bash <이 스킬 디렉토리>/evals/verify-refs.sh
 ```
-
-스크립트는 자기 위치를 기준으로 `references/`를 찾으므로 설치 경로와 무관하게 동작한다.
 
 검사 항목: `repo:` 레포 실존과 선언 브랜치 일치 / raw URL 200 / llms.txt가 진짜 text-plain인지 / 대표 코드 경로 실존. **실패 0이어야 한다.**
 
