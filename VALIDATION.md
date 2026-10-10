@@ -9,7 +9,7 @@
 | `claude plugin validate --strict ./plugins/agent-workflow` | Passed with Claude Code 2.1.226 |
 | `claude plugin validate --strict .` | Marketplace passed |
 | `git diff --check` | Passed |
-| Codex CLI Git marketplace installation | Version 0.1.2 was verified; 0.1.3 is checked after publishing |
+| Codex CLI Git marketplace installation | Installed and enabled, 0.1.3; all 16 plugin files match the published source and bundled companion paths resolve |
 
 Receipt behavior covers passing checks, failed checks, later source changes, changes during an auto-fix, modified logs, missing/deleted inputs, preserving prior receipts, missing executables, direct argv without shell expansion, and rejected symlink inputs.
 
