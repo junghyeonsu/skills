@@ -1,0 +1,12 @@
+{
+  "name": "agent-workflows",
+  "description": "Portable agent workflows",
+  "owner": {"name": "junghyeonsu"},
+  "plugins": [
+    {
+      "name": "agent-workflow",
+      "source": "./plugins/agent-workflow",
+      "description": "Goal execution, runtime verification, and scoped learning"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Learn From Work"
+  short_description: "반복 실수를 적절한 지식과 실제 검증 가능한 규칙으로 바꿉니다"
+  default_prompt: "Use $learn-from-work to capture meaningful corrections and propose a scoped mechanism to prevent recurrence."
+policy:
+  allow_implicit_invocation: true

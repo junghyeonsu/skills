@@ -1,6 +1,6 @@
 ## skills
 
-Claude Code용 커스텀 스킬 모음.
+여러 에이전트에서 사용할 커스텀 스킬과 플러그인 모음.
 
 ### ui-references
 
@@ -28,3 +28,32 @@ bash skills/ui-references/evals/verify-refs.sh
 레포 구조는 예고 없이 바뀐다. 2026-08 검증에서 react-spectrum(`@react-aria/*` → `react-aria/src/*`), shadcn(`apps/www` → `apps/v4`), input-otp(모노레포화)의 이동을 이 스크립트가 잡았다. 분기에 한 번 정도 돌리면 충분하다.
 
 라우팅이 의도대로 되는지는 `skills/ui-references/evals/scenarios.md`의 시나리오를 서브에이전트로 실행해 확인한다.
+
+
+## Agent Workflow
+
+Goal 실행 → 실제 검증 → 교훈·결정 정리의 개인 작업 루프입니다. 공통 스킬은 `plugins/agent-workflow/skills/` 한 곳에 두고 Codex·Claude에 플러그인으로 등록합니다. 기존 `ui-references`와 역할이 겹치지 않습니다.
+
+| 스킬 | 역할 |
+| --- | --- |
+| goal-loop | 목표·범위·권한 유지, 삭제·재사용 우선, 체크포인트와 재개 |
+| verify-outcome | 실제 환경·현재 변경을 기준으로 완료 근거 확인 |
+| learn-from-work | 교훈과 결정 분리, 반복 실수를 적절한 검증 장치로 연결 |
+
+Codex:
+
+```sh
+codex plugin marketplace add junghyeonsu/skills --ref main
+codex plugin add agent-workflow@agent-workflows
+```
+
+Claude Code:
+
+```sh
+claude plugin marketplace add junghyeonsu/skills
+claude plugin install agent-workflow@agent-workflows
+```
+
+대화에서 Codex는 `$goal-loop`, Claude는 `/agent-workflow:goal-loop`를 사용합니다. 로컬 수정본을 검토할 때는 `junghyeonsu/skills` 대신 이 저장소의 절대 경로를 사용하고 Codex의 `--ref main`은 생략합니다.
+
+[설치·사용·검증 안내](docs/agent-workflow.md) · [출처](PROVENANCE.md)

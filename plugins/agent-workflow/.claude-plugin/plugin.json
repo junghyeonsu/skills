@@ -1,0 +1,16 @@
+{
+  "name": "agent-workflow",
+  "version": "0.1.2",
+  "description": "Personal goal, verification, and learning workflows with portable agent skills.",
+  "author": {
+    "name": "junghyeonsu"
+  },
+  "license": "MIT",
+  "keywords": [
+    "goals",
+    "verification",
+    "learning"
+  ],
+  "repository": "https://github.com/junghyeonsu/skills",
+  "homepage": "https://github.com/junghyeonsu/skills"
+}

@@ -1,6 +1,6 @@
 # Skills 레포
 
-Claude Code용 커스텀 스킬 모음 레포.
+여러 에이전트용 커스텀 스킬과 플러그인 레포.
 
 ## 구조
 
@@ -29,3 +29,12 @@ skills/
 - SKILL.md 수정 후 description 트리거 정확도 확인
 - evals/ 디렉토리에 테스트 케이스가 있으면 검증
 - 다른 스킬을 참조하는 부분이 있으면 양쪽 동기화 확인
+
+
+## Agent Workflow 플러그인
+
+- 공통 원본은 `plugins/agent-workflow/skills/`에 둔다. 다른 호스트용 스킬 사본을 만들지 않는다.
+- `goal-loop`, `verify-outcome`, `learn-from-work`은 실행·완료 검증·학습을 담당한다. UI 레퍼런스가 필요하면 기존 `ui-references`를 선택적으로 사용한다.
+- 플러그인 안의 `AGENTS.md`와 각 스킬의 설명·eval 시나리오를 참고한다.
+- 세션 원문·개인 분석·회사 코드·런타임 근거는 이 배포 저장소에 넣지 않는다.
+- 새 스킬 문법 검사, receipt CLI 테스트, 플러그인 manifest 검증을 수행한다. 설치 검증을 새 에이전트의 행동 검증으로 보고하지 않는다.
