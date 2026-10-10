@@ -1,6 +1,6 @@
 interface:
   display_name: "Goal Loop"
-  short_description: "목표를 끝까지 실행하고 실제 결과와 남은 작업을 검증합니다"
-  default_prompt: "Use $goal-loop to execute the agreed plan with clear completion criteria and evidence."
+  short_description: "목표 실행부터 실제 검증과 작업 학습까지 한 흐름으로 수행합니다"
+  default_prompt: "Use $goal-loop to execute the agreed plan and automatically apply verify-outcome and learn-from-work before completion."
 policy:
   allow_implicit_invocation: true

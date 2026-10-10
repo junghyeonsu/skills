@@ -7,6 +7,8 @@ description: "의미 있는 사용자 교정, 예상 밖의 검증 실패, 반�
 
 Read only relevant task evidence and existing learning records. Do not mine unrelated private sessions by default. If no meaningful reusable finding exists, do not create a lesson just to complete a ritual.
 
+When called by `goal-loop`, perform this review automatically and return the useful finding, scoped action, or absence of a meaningful reusable finding to the workflow. Any change made during learning must return to that workflow's affected verification before it marks the goal complete.
+
 ## Classify the signal
 
 - **Task state**: missing credential, current failing check, next action. Keep in the task checkpoint.

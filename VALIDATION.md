@@ -1,17 +1,15 @@
 # Validation
 
-2026-10-10 · Agent Workflow 0.1.2 · base `5591357a874441981033b44b720a06b862156f4a`
+2026-10-10 · Agent Workflow 0.1.3 · base `990cda1ed820ec84d2bdff641badf58656393fe5`
 
 | Check | Result |
 | --- | --- |
-| `python3 -m unittest discover -s tests -v` | 11 CLI behavior tests passed |
-| Codex skill creator `quick_validate.py` for three new skills | Passed |
+| `python3 -m unittest discover -s tests -v` | 11 CLI behavior tests passed in 0.1.2; runner and test inputs are unchanged in 0.1.3 |
+| Codex skill creator `quick_validate.py` for all three skills | Passed |
 | `claude plugin validate --strict ./plugins/agent-workflow` | Passed with Claude Code 2.1.226 |
 | `claude plugin validate --strict .` | Marketplace passed |
 | `git diff --check` | Passed |
-| Codex CLI 0.146.1 local marketplace + plugin installation | Installed and enabled, 0.1.2 |
-| Installed source comparison after the rename | All 16 plugin files match; the previous plugin identifier was removed |
-| Codex CLI Git marketplace installation from `junghyeonsu/skills` main | Installed and enabled, 0.1.2; all 16 plugin files match the published source |
+| Codex CLI Git marketplace installation | Version 0.1.2 was verified; 0.1.3 is checked after publishing |
 
 Receipt behavior covers passing checks, failed checks, later source changes, changes during an auto-fix, modified logs, missing/deleted inputs, preserving prior receipts, missing executables, direct argv without shell expansion, and rejected symlink inputs.
 
@@ -19,7 +17,7 @@ The optional Python runner uses standard-library modules only. The basic Codex s
 
 Not yet verified:
 
-- A fresh agent's automatic invocation and adherence. See `tests/workflow-scenarios.md` for planned evaluation.
+- A fresh agent's automatic execution of the companion verification and learning phases from only a goal-loop invocation, and adherence. See `tests/workflow-scenarios.md` for planned evaluation.
 - Grok Build loading/runtime behavior. No Grok CLI was available in this environment.
 - GitHub remote CI. This addition does not include a GitHub Actions workflow.
 - Reduced correction rate or improved quality in later comparable goals.

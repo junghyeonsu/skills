@@ -1,11 +1,17 @@
 ---
 name: goal-loop
-description: "여러 단계의 구현·마이그레이션·디자인·리서치 작업을 목표 중심으로 끝까지 실행한다. 명시적인 goal 요청, 야간 작업, 중단 작업 재개에서 범위·권한·실제 검증·체크포인트를 유지하고 추가 전에 삭제와 재사용을 고려할 때 사용한다. 단순 질문과 작은 수정에는 적용하지 않는다."
+description: "여러 단계의 구현·마이그레이션·디자인·리서치 작업을 목표 중심으로 끝까지 실행하고 verify-outcome과 learn-from-work을 자동으로 함께 수행한다. 명시적인 goal 요청, 야간 작업, 중단 작업 재개에서 범위·권한·실제 검증·체크포인트를 유지하고 추가 전에 삭제와 재사용을 고려할 때 사용한다. 단순 질문과 작은 수정에는 적용하지 않는다."
 ---
 
 # Goal loop
 
 Use the host's tools and lifecycle. Read [the host adapter](references/hosts.md) for goal operations. This skill defines a workflow; it does not provide a scheduler or tool permissions.
+
+## Run the complete workflow
+
+`goal-loop` is the single entry point for execution, verification, and learning. At the start, read both bundled companions: [verify-outcome](../verify-outcome/SKILL.md) and [learn-from-work](../learn-from-work/SKILL.md), resolving paths from this skill's directory. Apply their instructions within the current workflow automatically; do not wait for separate user invocations or rely on implicit skill discovery. Load their supporting references only when relevant.
+
+Use `verify-outcome` at meaningful implementation checkpoints and before completion. Apply `learn-from-work` when a meaningful correction or unexpected failure occurs, and perform its learning review before the final handoff. If there is no meaningful reusable finding, create no lesson or rule. These phases retain the task's existing scope and authorization.
 
 ## Establish the finish line
 
@@ -31,8 +37,8 @@ After interruption or compaction, read the checkpoint, then verify current branc
 
 Use native goal tools only when the human explicitly requests a goal. Do not infer a goal registration from a normal task or a mention of the word goal. Do not invent a token budget. Follow the host's rules for pause, completion, blockers, and budgets.
 
-Before marking complete, compare the contract with the final implementation and run `verify-outcome`. If the user explicitly excluded unavailable integrations, finish the agreed subset and list those integrations as deferred with requirements. Otherwise they remain outstanding; do not quietly rewrite the goal.
+Before marking complete, compare the contract with the final implementation and perform `verify-outcome`, followed by the `learn-from-work` review. If learning changes code, checks, or task artifacts, re-verify the affected final result before completion. Finish only after verification supports the agreed scope and the learning review is done. If the user explicitly excluded unavailable integrations, finish the agreed subset and list those integrations as deferred with requirements. Otherwise they remain outstanding; do not quietly rewrite the goal.
 
-At a meaningful correction, surprising failure, or finish, apply `../learn-from-work/SKILL.md`. Learning can stay a candidate; writing a rule is not proof that the next agent obeys it.
+Learning can stay a candidate; writing a rule is not proof that the next agent obeys it. Include relevant verification results and adopted learning in the final report without inventing an empty lesson.
 
 Report concisely in Korean by default: result, meaningful AS IS → TO BE, verified evidence, remaining work or next action. Link the decisive evidence and decisions actually used. PR titles use English Conventional Commit style. Do not include private chain-of-thought; record observable decisions and their consequences.

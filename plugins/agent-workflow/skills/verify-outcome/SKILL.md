@@ -30,4 +30,4 @@ Compare every required item against final evidence. Compare affected decisions a
 
 For a shipping action already authorized by the human, verify its actual conditions against the current head. Report any unresolved required check, review, or mergeability state as unresolved. Green checks are not a replacement for merge authorization.
 
-Report what changed, what actually passed, material limits, and remaining items. Only then can the host's goal be marked complete for the agreed scope.
+Report what changed, what actually passed, material limits, and remaining items. When called by `goal-loop`, return this evidence to the workflow and keep goal completion pending until its learning review and any resulting verification are finished. When used independently, close only the verification scope requested by the user.

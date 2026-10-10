@@ -36,7 +36,7 @@ Goal 실행 → 실제 검증 → 교훈·결정 정리의 개인 작업 루프�
 
 | 스킬 | 역할 |
 | --- | --- |
-| goal-loop | 목표·범위·권한 유지, 삭제·재사용 우선, 체크포인트와 재개 |
+| goal-loop | 실행의 진입점: 목표·범위·권한 유지, 삭제·재사용 우선, 검증·학습 자동 연결 |
 | verify-outcome | 실제 환경·현재 변경을 기준으로 완료 근거 확인 |
 | learn-from-work | 교훈과 결정 분리, 반복 실수를 적절한 검증 장치로 연결 |
 
@@ -55,5 +55,7 @@ claude plugin install agent-workflow@agent-workflows
 ```
 
 대화에서 Codex는 `$goal-loop`, Claude는 `/agent-workflow:goal-loop`를 사용합니다. 로컬 수정본을 검토할 때는 `junghyeonsu/skills` 대신 이 저장소의 절대 경로를 사용하고 Codex의 `--ref main`은 생략합니다.
+
+`goal-loop`를 한 번 호출하면 `verify-outcome`과 `learn-from-work`을 함께 읽고 수행합니다. 완료 전 검증 → 학습 검토 → 학습에서 변경한 부분 재검증까지 이어집니다. 별도 검증이나 회고만 필요할 때는 두 스킬을 개별 호출할 수 있습니다. 학습할 내용이 없으면 불필요한 교훈 파일을 만들지 않습니다.
 
 [설치·사용·검증 안내](docs/agent-workflow.md) · [출처](PROVENANCE.md)
