@@ -11,6 +11,7 @@
 | `git diff --check` | Passed |
 | Codex CLI 0.146.1 local marketplace + plugin installation | Installed and enabled, 0.1.2 |
 | Installed source comparison after the rename | All 16 plugin files match; the previous plugin identifier was removed |
+| Codex CLI Git marketplace installation from `junghyeonsu/skills` main | Installed and enabled, 0.1.2; all 16 plugin files match the published source |
 
 Receipt behavior covers passing checks, failed checks, later source changes, changes during an auto-fix, modified logs, missing/deleted inputs, preserving prior receipts, missing executables, direct argv without shell expansion, and rejected symlink inputs.
 
@@ -21,7 +22,6 @@ Not yet verified:
 - A fresh agent's automatic invocation and adherence. See `tests/workflow-scenarios.md` for planned evaluation.
 - Grok Build loading/runtime behavior. No Grok CLI was available in this environment.
 - GitHub remote CI. This addition does not include a GitHub Actions workflow.
-- Git marketplace installation. This record covers the local source; published Git installation is checked separately at release.
 - Reduced correction rate or improved quality in later comparable goals.
 
 Existing `skills/ui-references/` was not modified. Its external pointer sweep was not rerun for this addition.
